@@ -143,13 +143,7 @@ class Contracts extends Component {
         <Modal
           visible={isModalVisible}
           title={
-<<<<<<< HEAD
             isNewCustomerAddModal ? "Добавление новой сделки" : "Данные сделки"
-=======
-            isNewCustomerAddModal
-              ? "Добавление нового клиента"
-              : "Данные клиента"
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
           }
           confirmLoading={loadingModal}
           maskClosable={false}

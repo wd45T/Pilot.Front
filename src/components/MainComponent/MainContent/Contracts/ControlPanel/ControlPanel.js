@@ -1,56 +1,76 @@
-<<<<<<< HEAD
-import React, { Component } from 'react';
-import { Button, Tooltip, Modal, Menu, Dropdown, Icon } from 'antd';
-import './ControlPanel.css';
-=======
 import React, { Component } from "react";
-import { Button, Tooltip, Modal } from "antd";
+import { Button, Tooltip, Modal, Menu, Dropdown, Icon } from "antd";
 import "./ControlPanel.css";
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
 const confirm = Modal.confirm;
 
 export default class ControlPanel extends Component {
   state = {};
-<<<<<<< HEAD
   handleMenuClick = () => {
-    const link = document.createElement('a');
-    link.href = 'http://wd45dev-001-site1.itempurl.com/api/User/b&cxg';
-    link.download = 'Договор1';
+    const data = {
+      city: "string",
+      com1: "string",
+      dir1: "string",
+      citizen: "string",
+      inn: "string",
+      kpp: "string",
+      bank: "string",
+      ra: "string",
+      ka: "string",
+      bik: "string",
+      yAdres: "string",
+      pAdres: "string",
+      cirtizenReg: "string",
+      citipzenP: "string",
+      ciptizePasport: "string",
+      ciwtizePaspwortNuwmber: "string",
+      citaizePaspsorDadte: "string",
+      citsizePassportIsssued: "string",
+      citizeTel: "string"
+    };
+    fetch("http://wd45dev-001-site1.itempurl.com/api/Reports", {
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+      .then(function(response) {
+        return response.blob();
+      })
+      .then(function(myBlob) {
+        const objectURL = URL.createObjectURL(myBlob);
+        const link = document.createElement("a");
+        if (typeof link.download === "undefined") {
+          window.location = objectURL;
+        } else {
+          link.href = objectURL;
+          link.download = "Договор1.docx";
 
-    document.body.appendChild(link);
+          document.body.appendChild(link);
 
-    link.click();
-    link.remove();
+          link.click();
+          link.remove();
+        }
+      })
+      .catch(error => {
+        console.log("error", error);
+      });
   };
 
   showDeleteConfirm = () => {
     confirm({
-      title: 'Вы точно хотите удалить сделку?',
-      content: 'Точно-точно?',
-      okText: 'Да',
-      okType: 'danger',
-      cancelText: 'Нет',
-      onOk() {},
-      onCancel() {},
-=======
-  handleMenuClick = () => {};
-
-  showDeleteConfirm = () => {
-    confirm({
-      title: "Вы точно хотите удалить клиента?",
+      title: "Вы точно хотите удалить сделку?",
       content: "Точно-точно?",
       okText: "Да",
       okType: "danger",
       cancelText: "Нет",
       onOk() {},
       onCancel() {}
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
     });
   };
   render() {
     const { selectedRowKeys, openCursomerModal } = this.props;
     const hasSelected = selectedRowKeys.length > 0;
-<<<<<<< HEAD
     const menu = (
       <Menu>
         <Menu.Item key="1" onClick={this.handleMenuClick}>
@@ -60,15 +80,6 @@ export default class ControlPanel extends Component {
         <Menu.Item key="3">Счет</Menu.Item>
       </Menu>
     );
-=======
-    // const menu = (
-    //   <Menu onClick={this.handleMenuClick}>
-    //     <Menu.Item key="1">Договор</Menu.Item>
-    //     <Menu.Item key="2">Акт</Menu.Item>
-    //     <Menu.Item key="3">Счет</Menu.Item>
-    //   </Menu>
-    // );
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
     return (
       <div className="top-bar">
         <Tooltip placement="bottomLeft" title="Добавить новую сделку">
@@ -77,11 +88,7 @@ export default class ControlPanel extends Component {
             type="primary"
             icon="plus"
             onClick={() => {
-<<<<<<< HEAD
-              openCursomerModal('add');
-=======
               openCursomerModal("add");
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
             }}
           />
         </Tooltip>
@@ -91,11 +98,7 @@ export default class ControlPanel extends Component {
             icon="edit"
             disabled={!hasSelected}
             onClick={() => {
-<<<<<<< HEAD
-              openCursomerModal('edit');
-=======
               openCursomerModal("edit");
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
             }}
           />
         </Tooltip>
@@ -108,19 +111,11 @@ export default class ControlPanel extends Component {
             onClick={this.showDeleteConfirm}
           />
         </Tooltip>
-<<<<<<< HEAD
         <Dropdown overlay={menu} disabled={!hasSelected}>
           <Button>
             Скачать <Icon type="down" />
           </Button>
         </Dropdown>
-=======
-        {/* <Dropdown overlay={menu} disabled={!hasSelected}>
-          <Button>
-            Скачать <Icon type="down" />
-          </Button>
-        </Dropdown> */}
->>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
       </div>
     );
   }
