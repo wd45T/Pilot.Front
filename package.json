@@ -5,7 +5,10 @@
   "dependencies": {
     "antd": "^3.6.2",
     "antd-init": "^2.0.6",
+<<<<<<< HEAD
     "http-server": "^0.11.1",
+=======
+>>>>>>> bf9035eb34e44c5589a370ad65451282a7d407f1
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
