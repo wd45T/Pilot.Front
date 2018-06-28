@@ -8,17 +8,19 @@ export default class ControlPanel extends Component {
   handleMenuClick = () => {
     const data = {
       city: "string",
-      com1: "string",
-      dir1: "string",
+      com1: "ООО «Камводсервис»",
+      dir1: "Муртазин Айрат Миркаламович",
       citizen: "string",
-      inn: "string",
-      kpp: "string",
-      bank: "string",
-      ra: "string",
-      ka: "string",
-      bik: "string",
-      yAdres: "string",
-      pAdres: "string",
+      inn: "0231008342",
+      kpp: "023101001",
+      bank: "Башкирское отделение № 8598 ПАО Сбербанк России",
+      ra: "40702810106000010175",
+      ka: "30101810300000000601",
+      bik: "048073601",
+      yAdres:
+        "452930, Россия, Республика Башкортостан, Краснокамский район, с.Николо-Березовка, ул. Макаренко, д. 14",
+      pAdres:
+        "452930, Россия, Республика Башкортостан, Краснокамский район, с.Николо-Березовка, ул. Макаренко, д. 14",
       cirtizenReg: "string",
       citipzenP: "string",
       ciptizePasport: "string",
@@ -29,6 +31,7 @@ export default class ControlPanel extends Component {
     };
     fetch("http://wd45dev-001-site1.itempurl.com/api/Reports", {
       headers: {
+        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"
       },
       method: "POST",
