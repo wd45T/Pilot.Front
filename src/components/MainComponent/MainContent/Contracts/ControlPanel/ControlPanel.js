@@ -93,13 +93,15 @@ export default class ControlPanel extends Component {
             onClick={() => {
               openCursomerModal("add");
             }}
+            disabled
           />
         </Tooltip>
         <Tooltip placement="bottomLeft" title="Редактировать сделку">
           <Button
             className="button"
             icon="edit"
-            disabled={!hasSelected}
+            // disabled={!hasSelected}
+            disabled
             onClick={() => {
               openCursomerModal("edit");
             }}

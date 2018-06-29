@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Layout, Table, Modal, Button } from "antd";
+import { Layout, Table } from "antd";
 import "./Customers.css";
 import reqwest from "reqwest";
 import ControlPanel from "./ControlPanel/ControlPanel";
-import WrappedLogin from "./CustomerFeilds/CustomerFeilds";
 
 const { Content } = Layout;
 
@@ -101,21 +100,8 @@ class Customers extends Component {
     this.setState({ isModalVisible: false });
   };
 
-  openCursomerModal = e => {
-    this.setState({
-      isModalVisible: true,
-      isNewCustomerAddModal: e === "add"
-    });
-  };
-
   render() {
-    const {
-      loading,
-      selectedRowKeys,
-      isModalVisible,
-      loadingModal,
-      isNewCustomerAddModal
-    } = this.state;
+    const { loading, selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       type: "radio",
@@ -125,10 +111,7 @@ class Customers extends Component {
 
     return (
       <Content>
-        <ControlPanel
-          selectedRowKeys={selectedRowKeys}
-          openCursomerModal={this.openCursomerModal}
-        />
+        <ControlPanel selectedRowKeys={selectedRowKeys} />
         <Table
           className="customers__table"
           columns={columns}
@@ -140,32 +123,6 @@ class Customers extends Component {
           rowSelection={rowSelection}
           onRow={this.onRow}
         />
-        <Modal
-          visible={isModalVisible}
-          title={
-            isNewCustomerAddModal
-              ? "Добавление нового клиента"
-              : "Данные клиента"
-          }
-          confirmLoading={loadingModal}
-          maskClosable={false}
-          width="900px"
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              Отмена
-            </Button>,
-            <Button
-              key="submit"
-              type="primary"
-              loading={loadingModal}
-              onClick={this.handleOk}
-            >
-              {loadingModal ? "Сохранение" : "Сохранить"}
-            </Button>
-          ]}
-        >
-          <WrappedLogin />
-        </Modal>
       </Content>
     );
   }
