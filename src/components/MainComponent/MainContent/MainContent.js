@@ -5,6 +5,7 @@ import Customers from "./Customers/Customers";
 import Customer from "./Customers/Customer/Customer";
 import Documents from "./Documents/Documents";
 import Contracts from "./Contracts/Contracts";
+import PageNotFound from "./PageNotFound/PageNotFound";
 
 class MainContent extends Component {
   render() {
@@ -16,6 +17,7 @@ class MainContent extends Component {
         <Route path="/customers/customer1" component={Customer} />
         <Route path="/contracts" component={Contracts} />
         <Route path="/documents" component={Documents} />
+        <Route component={PageNotFound} />
       </Switch>
     );
   }

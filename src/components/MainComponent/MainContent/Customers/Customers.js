@@ -8,21 +8,44 @@ const { Content } = Layout;
 
 const columns = [
   {
-    title: "Имя",
-    dataIndex: "name",
+    title: "Наименование",
+    dataIndex: "fullName",
     sorter: true,
-    render: name => `${name.first} ${name.last}`,
+    // render: name => `${name.first} ${name.last}`,
+    width: "25%"
+  },
+  {
+    title: "Тип",
+    dataIndex: "typeEnterprise",
+    sorter: true,
+    width: "10%",
+    filters: [
+      { text: "Юр. лицо", value: "LLC" },
+      { text: "ИП", value: "Individual" }
+    ]
+  },
+  {
+    title: "ФИО руководителя",
+    dataIndex: "managerName",
+    sorter: true,
     width: "20%"
   },
   {
-    title: "Пол",
-    dataIndex: "gender",
-    filters: [{ text: "М", value: "male" }, { text: "Ж", value: "female" }],
-    width: "20%"
+    title: "ИНН",
+    dataIndex: "inn",
+    sorter: true,
+    width: "10%"
   },
   {
-    title: "Email",
-    dataIndex: "email"
+    title: "Телефон/факс",
+    dataIndex: "phoneFax",
+    sorter: true,
+    width: "15%"
+  },
+  {
+    title: "Эл. адрес",
+    dataIndex: "email",
+    width: "20%"
   }
 ];
 
@@ -33,8 +56,7 @@ class Customers extends Component {
     loading: false,
     selectedRowKeys: [], // Check here to configure the default column
     isModalVisible: false,
-    loadingModal: false,
-    isNewCustomerAddModal: true
+    loadingModal: false
   };
   handleTableChange = (pagination, filters, sorter) => {
     const pager = { ...this.state.pagination };
@@ -53,22 +75,18 @@ class Customers extends Component {
   fetch = (params = {}) => {
     this.setState({ loading: true });
     reqwest({
-      url: "https://randomuser.me/api",
+      url: "http://wd45dev-001-site1.itempurl.com/api/Enterprise",
+      // url: "https://randomuser.me/api",
       method: "get",
-      data: {
-        results: 10,
-        ...params
-      },
+      // data: {
+      //   results: 10,
+      //   ...params
+      // },
       type: "json"
-    }).then(data => {
-      const pagination = { ...this.state.pagination };
-      // Read total count from server
-      // pagination.total = data.totalCount;
-      pagination.total = 200;
+    }).then(result => {
       this.setState({
         loading: false,
-        data: data.results,
-        pagination
+        data: result.data
       });
     });
   };
@@ -122,6 +140,11 @@ class Customers extends Component {
           onChange={this.handleTableChange}
           rowSelection={rowSelection}
           onRow={this.onRow}
+          locale={{
+            emptyText: "Нет данных",
+            filterConfirm: "Да",
+            filterReset: "Сброс"
+          }}
         />
       </Content>
     );
