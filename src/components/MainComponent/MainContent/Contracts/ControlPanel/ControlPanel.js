@@ -7,27 +7,35 @@ export default class ControlPanel extends Component {
   state = {};
   handleMenuClick = () => {
     const data = {
-      city: "string",
-      com1: "ООО «Камводсервис»",
-      dir1: "Муртазин Айрат Миркаламович",
-      citizen: "string",
-      inn: "0231008342",
-      kpp: "023101001",
-      bank: "Башкирское отделение № 8598 ПАО Сбербанк России",
-      ra: "40702810106000010175",
-      ka: "30101810300000000601",
-      bik: "048073601",
-      yAdres:
-        "452930, Россия, Республика Башкортостан, Краснокамский район, с.Николо-Березовка, ул. Макаренко, д. 14",
-      pAdres:
-        "452930, Россия, Республика Башкортостан, Краснокамский район, с.Николо-Березовка, ул. Макаренко, д. 14",
-      cirtizenReg: "string",
-      citipzenP: "string",
-      ciptizePasport: "string",
-      ciwtizePaspwortNuwmber: "string",
-      citaizePaspsorDadte: "string",
-      citsizePassportIsssued: "string",
-      citizeTel: "string"
+      contractNumber: "string",
+      enterprise: "string",
+      enterprisePerson: "string",
+      base: "string",
+      sectionAddress: "string",
+      sectionRole: "string",
+      sectionArea: "string",
+      contractPrice: "string",
+      rows: [
+        [
+          "string11",
+          "string12",
+          "string13",
+          "string14",
+          "string15",
+          "string16"
+        ],
+        [
+          "string21",
+          "string22",
+          "string23",
+          "string24",
+          "string25",
+          "string26"
+        ],
+        ["string31", "string32", "string33", "string34", "string35", "string36"]
+      ],
+      urlImage:
+        "https://pp.userapi.com/c627630/v627630522/33701/GzccYfftTQA.jpg"
     };
     fetch("http://wd45dev-001-site1.itempurl.com/api/Reports", {
       headers: {

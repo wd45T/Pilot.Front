@@ -33,6 +33,12 @@ class MainMenu extends Component {
               <span>Сделки</span>
             </Link>
           </Menu.Item>
+          <Menu.Item key="3">
+            <Link to="/сontract">
+              <Icon type="file" />
+              <span>Договор</span>
+            </Link>
+          </Menu.Item>
           {/* <Menu.Item key="3">
             <Link to="/documents">
               <Icon type="file" />
