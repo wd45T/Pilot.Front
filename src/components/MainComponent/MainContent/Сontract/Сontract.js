@@ -12,6 +12,7 @@ import {
   message
 } from "antd";
 import EditableCell from "./EditableCell";
+import "./EditableCell.css";
 
 const { Content } = Layout;
 const FormItem = Form.Item;
@@ -232,12 +233,11 @@ class СontractForm extends Component {
               "string36"
             ]
           ],
-          urlImage:
-            "https://pp.userapi.com/c627630/v627630522/33701/GzccYfftTQA.jpg"
+          urlImage: "http://ruinformer.com/uploads/_pages/15750/zajavlenie1.jpg"
         };
         console.log("dataToSave", dataToSave);
         console.log("data", data);
-        this.downloadContract(dataToSave);
+        this.downloadContract(data);
       }
     });
   };
