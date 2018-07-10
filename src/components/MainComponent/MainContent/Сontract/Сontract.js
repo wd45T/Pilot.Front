@@ -168,45 +168,6 @@ class СontractForm extends Component {
         console.log("Данные для отправки: ", values);
         const dataToSave = {
           ...values,
-          row: [
-            [
-              "string11",
-              "string12",
-              "string13",
-              "string14",
-              "string15",
-              "string16"
-            ],
-            [
-              "string21",
-              "string22",
-              "string23",
-              "string24",
-              "string25",
-              "string26"
-            ],
-            [
-              "string31",
-              "string32",
-              "string33",
-              "string34",
-              "string35",
-              "string36"
-            ]
-          ],
-          urlImage:
-            "https://pp.userapi.com/c627630/v627630522/33701/GzccYfftTQA.jpg"
-        };
-
-        const data = {
-          contractNumber: "string",
-          enterprise: "string",
-          enterprisePerson: "string",
-          base: "string",
-          sectionAddress: "string",
-          sectionRole: "string",
-          sectionArea: "string",
-          contractPrice: "string",
           rows: [
             [
               "string11",
@@ -233,11 +194,10 @@ class СontractForm extends Component {
               "string36"
             ]
           ],
-          urlImage: "http://ruinformer.com/uploads/_pages/15750/zajavlenie1.jpg"
+          urlImage: ""
         };
-        console.log("dataToSave", dataToSave);
-        console.log("data", data);
-        this.downloadContract(data);
+
+        this.downloadContract(dataToSave);
       }
     });
   };
@@ -249,7 +209,7 @@ class СontractForm extends Component {
         "Access-Control-Allow-Origin": "*"
       },
       method: "POST",
-      body: data
+      body: JSON.stringify(data)
     })
       .then(response => {
         return response.blob();
