@@ -4,7 +4,7 @@ import "./Customers.css";
 import reqwest from "reqwest";
 import ControlPanel from "./ControlPanel/ControlPanel";
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 
 const columns = [
   {
@@ -128,25 +128,29 @@ class Customers extends Component {
     };
 
     return (
-      <Content>
-        <ControlPanel selectedRowKeys={selectedRowKeys} />
-        <Table
-          className="customers__table"
-          columns={columns}
-          rowKey={record => record.registered}
-          dataSource={this.state.data}
-          pagination={this.state.pagination}
-          loading={loading}
-          onChange={this.handleTableChange}
-          rowSelection={rowSelection}
-          onRow={this.onRow}
-          locale={{
-            emptyText: "Нет данных",
-            filterConfirm: "Да",
-            filterReset: "Сброс"
-          }}
-        />
-      </Content>
+      <Layout>
+        <Header>
+          <ControlPanel selectedRowKeys={selectedRowKeys} />
+        </Header>
+        <Content>
+          <Table
+            className="customers__table"
+            columns={columns}
+            rowKey={record => record.registered}
+            dataSource={this.state.data}
+            pagination={this.state.pagination}
+            loading={loading}
+            onChange={this.handleTableChange}
+            rowSelection={rowSelection}
+            onRow={this.onRow}
+            locale={{
+              emptyText: "Нет данных",
+              filterConfirm: "Да",
+              filterReset: "Сброс"
+            }}
+          />
+        </Content>
+      </Layout>
     );
   }
 }

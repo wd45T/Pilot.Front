@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,iBADe,CACf,gBAAgB,CAAC;EACf,MAAM,EAAE,OAAO;CAChB",
+    "sources": [
+        "Customers.scss"
+    ],
+    "names": [],
+    "file": "Customers.css"
+}

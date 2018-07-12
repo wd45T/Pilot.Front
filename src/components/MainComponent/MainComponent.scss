@@ -1,0 +1,25 @@
+.main-component {
+    height: 100%;
+    min-width: 100vh;
+    max-height: 100vh;
+}
+
+.ant-layout {
+    overflow: hidden;
+}
+
+.ant-layout-content {
+    overflow-y: auto;
+}
+
+.ant-layout-header {
+    line-height: inherit;
+    background: #eee;
+    height: 50px;
+    padding: 0px;
+}
+
+.ant-table-thead {
+    position: sticky;
+    top: 50px
+}

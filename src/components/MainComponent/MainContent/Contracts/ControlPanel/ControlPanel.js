@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, Tooltip, Modal, Menu, Dropdown, Icon } from "antd";
+import { Button, Tooltip, Modal, Menu, Dropdown, Icon, Layout } from "antd";
 import "./ControlPanel.css";
 const confirm = Modal.confirm;
+const { Header } = Layout;
 
 export default class ControlPanel extends Component {
   state = {};
@@ -80,7 +81,7 @@ export default class ControlPanel extends Component {
     });
   };
   render() {
-    const { selectedRowKeys, openCursomerModal } = this.props;
+    const { selectedRowKeys, openContractModal } = this.props;
     const hasSelected = selectedRowKeys.length > 0;
     const menu = (
       <Menu>
@@ -99,7 +100,7 @@ export default class ControlPanel extends Component {
             type="primary"
             icon="plus"
             onClick={() => {
-              openCursomerModal("add");
+              openContractModal("add");
             }}
             disabled
           />
@@ -108,10 +109,10 @@ export default class ControlPanel extends Component {
           <Button
             className="button"
             icon="edit"
-            // disabled={!hasSelected}
-            disabled
+            disabled={!hasSelected}
+            // disabled
             onClick={() => {
-              openCursomerModal("edit");
+              openContractModal("edit");
             }}
           />
         </Tooltip>

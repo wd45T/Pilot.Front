@@ -185,9 +185,9 @@ class CustomerForm extends Component {
                 placeholder="Выберите тип клиента!"
                 onChange={this.selectCustomerType}
               >
-                <Option value="ul"> Юридическое лицо </Option>
-                <Option value="ip"> Индивидуальный предприниматель </Option>
-                <Option value="fl"> Физическое лицо </Option>
+                <Option value="ul">Юридическое лицо</Option>
+                <Option value="ip">Индивидуальный предприниматель</Option>
+                <Option value="fl">Физическое лицо</Option>
               </Select>
             )}
           </FormItem>

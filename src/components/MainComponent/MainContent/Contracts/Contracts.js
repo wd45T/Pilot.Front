@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Layout, Table } from "antd";
+import { Layout, Table, Tooltip, Button } from "antd";
 import "./Contracts.css";
 import reqwest from "reqwest";
 import ControlPanel from "./ControlPanel/ControlPanel";
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 
 const columns = [
   {
@@ -76,12 +76,12 @@ class Contracts extends Component {
     this.fetch();
   }
 
-  onSelectRow = () => {
-    // this.setState({ selectedRowKeys });
-  };
-  onSelectChange = selectedRowKeys => {
-    this.setState({ selectedRowKeys });
-  };
+  // onSelectRow = () => {
+  //   // this.setState({ selectedRowKeys });
+  // };
+  // onSelectChange = selectedRowKeys => {
+  //   this.setState({ selectedRowKeys });
+  // };
   onRow = record => {
     return {
       onClick: () => {
@@ -100,30 +100,40 @@ class Contracts extends Component {
     this.setState({ isModalVisible: false });
   };
 
+  openContractModal = data => {
+    console.log("data", data);
+  };
+
   render() {
     const { loading, selectedRowKeys } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      type: "radio",
-      onChange: this.onSelectChange,
-      onSelect: this.onSelectRow
-    };
 
     return (
-      <Content>
-        <ControlPanel selectedRowKeys={selectedRowKeys} />
-        <Table
-          className="customers__table"
-          columns={columns}
-          rowKey={record => record.registered}
-          dataSource={this.state.data}
-          pagination={this.state.pagination}
-          loading={loading}
-          onChange={this.handleTableChange}
-          rowSelection={rowSelection}
-          onRow={this.onRow}
-        />
-      </Content>
+      <Layout>
+        <Header className="top-bar">
+          <Tooltip placement="bottomLeft" title="Добавить новую сделку">
+            <Button
+              className="button"
+              type="primary"
+              icon="plus"
+              onClick={() => {
+                this.openContractModal();
+              }}
+            />
+          </Tooltip>
+        </Header>
+        <Content>
+          <Table
+            className="customers__table"
+            columns={columns}
+            rowKey={record => record.registered}
+            dataSource={this.state.data}
+            pagination={this.state.pagination}
+            loading={loading}
+            onChange={this.handleTableChange}
+            onRow={this.onRow}
+          />
+        </Content>
+      </Layout>
     );
   }
 }
