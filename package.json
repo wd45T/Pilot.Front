@@ -1,31 +1,142 @@
 {
-  "name": "ig1",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "antd": "^3.6.2",
-    "antd-init": "^2.0.6",
-    "http-server": "^0.11.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
-    "reqwest": "^2.0.5"
-  },
-  "scripts": {
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "css": {
-    "preprocess": "less"
-  },
-  "devDependencies": {
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-prettier": "^2.6.1",
-    "prettier": "^1.13.5"
-  }
+    "name": "it-greenlandia",
+    "version": "0.0.1",
+    "description": "Frontend part of IT-GREENLANDIA project",
+    "author": "Vagiz Akhmetov",
+    "private": true,
+    "scripts": {
+        "build": "webpack --mode production",
+        "build-test": "webpack --mode production --build-type test --progress",
+        "build-dev": "webpack --mode production --build-type dev --progress",
+        "build-prod": "webpack --mode production --build-type prod --progress",
+        "start": "webpack-dev-server --mode development",
+        "start-test": "webpack-dev-server --mode development --build-type test",
+        "start-dev": "webpack-dev-server --mode development --build-type dev"
+    },
+    "devDependencies": {
+        "autoprefixer": "^8.4.1",
+        "babel-core": "^6.26.3",
+        "babel-eslint": "^8.2.3",
+        "babel-jest": "^22.4.3",
+        "babel-loader": "^7.1.4",
+        "babel-plugin-import": "^1.7.0",
+        "babel-plugin-transform-decorators-legacy": "^1.3.4",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "clean-webpack-plugin": "^0.1.19",
+        "copy-webpack-plugin": "^4.5.1",
+        "css-loader": "^0.28.11",
+        "eslint": "^5.1.0",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-plugin-import": "^2.11.0",
+        "eslint-plugin-react": "^7.7.0",
+        "file-loader": "^1.1.11",
+        "html-webpack-plugin": "^3.2.0",
+        "jest": "^22.4.3",
+        "less": "2.7.2",
+        "less-loader": "^4.1.0",
+        "mini-css-extract-plugin": "^0.4.0",
+        "optimize-css-assets-webpack-plugin": "^4.0.1",
+        "postcss-loader": "^2.1.5",
+        "prettier-eslint": "^8.8.2",
+        "style-loader": "^0.21.0",
+        "uglifyjs-webpack-plugin": "^1.2.5",
+        "url-loader": "^1.0.1",
+        "webpack": "^4.8.1",
+        "webpack-cli": "^2.1.3",
+        "webpack-dev-server": "^3.1.4"
+    },
+    "browserslist": [
+        "Firefox >= 40",
+        "Chrome >= 40",
+        "Safari >= 7",
+        "IE >= 10"
+    ],
+    "eslintConfig": {
+        "root": true,
+        "extends": [
+            "airbnb-base",
+            "prettier"
+        ],
+        "parserOptions": {
+            "ecmaVersion": 7,
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "arrowFunctions": true,
+                "jsx": true,
+                "modules": true,
+                "decorators": true
+            }
+        },
+        "plugins": [
+            "react"
+        ],
+        "parser": "babel-eslint",
+        "env": {
+            "browser": true
+        },
+        "rules": {
+            "import/no-unresolved": "off",
+            "import/extensions": "off",
+            "react/jsx-uses-react": 2,
+            "react/jsx-uses-vars": 2,
+            "react/react-in-jsx-scope": 2,
+            "class-methods-use-this": "off",
+            "linebreak-style": [
+                "error",
+                "windows"
+            ],
+            "no-restricted-syntax": "off"
+        }
+    },
+    "babel": {
+        "presets": [
+            [
+                "env",
+                {
+                    "modules": false,
+                    "targets": {
+                        "browsers": [
+                            "Firefox >= 40",
+                            "Chrome >= 40",
+                            "Safari >= 7",
+                            "IE >= 10"
+                        ]
+                    }
+                }
+            ],
+            "stage-2",
+            "react"
+        ],
+        "plugins": [
+            "react-hot-loader/babel",
+            [
+                "import",
+                {
+                    "libraryName": "antd",
+                    "style": true
+                }
+            ],
+            "transform-decorators-legacy"
+        ]
+    },
+    "dependencies": {
+        "antd": "^3.5.0",
+        "axios": "^0.18.0",
+        "mobx": "^4.2.1",
+        "mobx-react": "^5.1.2",
+        "moment": "^2.22.2",
+        "randomcolor": "^0.5.3",
+        "react": "^16.3.2",
+        "react-dom": "^16.3.2",
+        "react-hot-loader": "^4.1.2",
+        "react-router-dom": "^4.2.2",
+        "react-splitter-layout": "^3.0.0",
+        "react-virtualized": "^9.18.5",
+        "recharts": "^1.0.0-beta.10",
+        "webpack-bundle-analyzer": "^2.13.1"
+    }
 }
