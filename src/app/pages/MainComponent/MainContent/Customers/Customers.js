@@ -1,52 +1,52 @@
-import React, { Component } from "react";
-import { Layout, Table } from "antd";
-import "./Customers.css";
-import reqwest from "reqwest";
-import ControlPanel from "./ControlPanel/ControlPanel";
+import React, { Component } from 'react';
+import { Layout, Table } from 'antd';
+import './Customers.css';
+import reqwest from 'reqwest';
+import ControlPanel from './ControlPanel/ControlPanel';
 
 const { Content, Header } = Layout;
 
 const columns = [
   {
-    title: "Наименование",
-    dataIndex: "fullName",
+    title: 'Наименование',
+    dataIndex: 'fullName',
     sorter: true,
     // render: name => `${name.first} ${name.last}`,
-    width: "25%"
+    width: '25%',
   },
   {
-    title: "Тип",
-    dataIndex: "typeEnterprise",
+    title: 'Тип',
+    dataIndex: 'typeEnterprise',
     sorter: true,
-    width: "10%",
+    width: '10%',
     filters: [
-      { text: "Юр. лицо", value: "LLC" },
-      { text: "ИП", value: "Individual" }
-    ]
+      { text: 'Юр. лицо', value: 'LLC' },
+      { text: 'ИП', value: 'Individual' },
+    ],
   },
   {
-    title: "ФИО руководителя",
-    dataIndex: "managerName",
+    title: 'ФИО руководителя',
+    dataIndex: 'managerName',
     sorter: true,
-    width: "20%"
+    width: '20%',
   },
   {
-    title: "ИНН",
-    dataIndex: "inn",
+    title: 'ИНН',
+    dataIndex: 'inn',
     sorter: true,
-    width: "10%"
+    width: '10%',
   },
   {
-    title: "Телефон/факс",
-    dataIndex: "phoneFax",
+    title: 'Телефон/факс',
+    dataIndex: 'phoneFax',
     sorter: true,
-    width: "15%"
+    width: '15%',
   },
   {
-    title: "Эл. адрес",
-    dataIndex: "email",
-    width: "20%"
-  }
+    title: 'Эл. адрес',
+    dataIndex: 'email',
+    width: '20%',
+  },
 ];
 
 class Customers extends Component {
@@ -56,37 +56,37 @@ class Customers extends Component {
     loading: false,
     selectedRowKeys: [], // Check here to configure the default column
     isModalVisible: false,
-    loadingModal: false
+    loadingModal: false,
   };
   handleTableChange = (pagination, filters, sorter) => {
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     this.setState({
-      pagination: pager
+      pagination: pager,
     });
     this.fetch({
       results: pagination.pageSize,
       page: pagination.current,
       sortField: sorter.field,
       sortOrder: sorter.order,
-      ...filters
+      ...filters,
     });
   };
   fetch = (params = {}) => {
     this.setState({ loading: true });
     reqwest({
-      url: "http://wd45dev-001-site1.itempurl.com/api/Enterprise",
+      url: 'http://wd45dev-001-site1.itempurl.com/api/Enterprise',
       // url: "https://randomuser.me/api",
-      method: "get",
+      method: 'get',
       // data: {
       //   results: 10,
       //   ...params
       // },
-      type: "json"
-    }).then(result => {
+      type: 'json',
+    }).then((result) => {
       this.setState({
         loading: false,
-        data: result.data
+        data: result.data,
       });
     });
   };
@@ -97,15 +97,15 @@ class Customers extends Component {
   onSelectRow = () => {
     // this.setState({ selectedRowKeys });
   };
-  onSelectChange = selectedRowKeys => {
+  onSelectChange = (selectedRowKeys) => {
     this.setState({ selectedRowKeys });
   };
-  onRow = record => {
+  onRow = (record) => {
     return {
       onClick: () => {
         this.setState({ selectedRowKeys: [record.registered] });
       }, // click row
-      onMouseEnter: () => {} // mouse enter row
+      onMouseEnter: () => {}, // mouse enter row
     };
   };
   handleOk = () => {
@@ -122,9 +122,9 @@ class Customers extends Component {
     const { loading, selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
-      type: "radio",
+      type: 'radio',
       onChange: this.onSelectChange,
-      onSelect: this.onSelectRow
+      onSelect: this.onSelectRow,
     };
 
     return (
@@ -136,7 +136,7 @@ class Customers extends Component {
           <Table
             className="customers__table"
             columns={columns}
-            rowKey={record => record.registered}
+            rowKey={(record) => record.registered}
             dataSource={this.state.data}
             pagination={this.state.pagination}
             loading={loading}
@@ -144,9 +144,9 @@ class Customers extends Component {
             rowSelection={rowSelection}
             onRow={this.onRow}
             locale={{
-              emptyText: "Нет данных",
-              filterConfirm: "Да",
-              filterReset: "Сброс"
+              emptyText: 'Нет данных',
+              filterConfirm: 'Да',
+              filterReset: 'Сброс',
             }}
           />
         </Content>

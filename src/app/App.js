@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Layout, Menu, Icon, Modal, Badge } from "antd";
-import { Switch, Route, Link, withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { Layout, Menu, Icon, Modal, Badge } from 'antd';
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
-import routes from "./routes";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
+import routes from './routes';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
 const { Content, Sider } = Layout;
 
 class App extends Component {
   state = {
-    selectedRoutes: "",
+    selectedRoutes: '',
     menuItems: [],
     routerComponents: [],
-    collapsed: false
+    collapsed: true,
   };
 
   componentDidMount() {
@@ -22,7 +22,7 @@ class App extends Component {
       selectedRoutes: [this.props.location.pathname],
       availableRoutes,
       menuItems: this.getMenuItems(availableRoutes),
-      routerComponents: this.getRouterComponents(availableRoutes)
+      routerComponents: this.getRouterComponents(availableRoutes),
     });
   }
 
@@ -30,7 +30,7 @@ class App extends Component {
     const { auth } = this.props;
     const result = [];
 
-    routes.forEach(route => {
+    routes.forEach((route) => {
       if (route.admin && !auth.user.admin) return;
 
       const newRoute = { ...route };
@@ -51,7 +51,7 @@ class App extends Component {
   };
 
   getMenuItems = (routes, parentRoute) =>
-    routes.map(route => {
+    routes.map((route) => {
       if (!route.text) return null;
 
       if (route.routes) {
@@ -95,7 +95,7 @@ class App extends Component {
   getRouterComponents = (routes, parentRoute) => {
     let result = [];
 
-    routes.forEach(route => {
+    routes.forEach((route) => {
       if (!route.to) return;
 
       result.push(
@@ -116,14 +116,19 @@ class App extends Component {
 
   toggle = () => {
     this.setState({
-      collapsed: !this.state.collapsed
-    })
-  }
+      collapsed: !this.state.collapsed,
+    });
+  };
 
   render() {
-    const { menuItems, routerComponents, selectedRoutes, collapsed } = this.state;
+    const {
+      menuItems,
+      routerComponents,
+      selectedRoutes,
+      collapsed,
+    } = this.state;
     return (
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: '100vh' }}>
         <Sider
           width={200}
           className="app-sider"
@@ -135,7 +140,7 @@ class App extends Component {
           <Icon
             onClick={this.toggle}
             className="trigger"
-            type={collapsed ? "menu-unfold" : "menu-fold"}
+            type={collapsed ? 'menu-unfold' : 'menu-fold'}
           />
           <Menu
             onSelect={this.selectMenu}

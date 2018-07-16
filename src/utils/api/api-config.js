@@ -1,262 +1,131 @@
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import wait from 'utils/wait';
+import moment from 'moment';
 
 function getExportReportMethodName(methodName, reportType) {
-    if (reportType === 'pdf')
-        methodName += 'Pdf';
+  if (reportType === 'pdf') methodName += 'Pdf';
 
-    return methodName;
+  return methodName;
 }
 
+const GENERIC_TYPES = {
+  periodicity: 'ab9da2c2-3228-49ef-acbd-3cc99355b3c2',
+  scheduleTypes: 'd8ff3d71-6d46-4c72-a279-920c26502d72',
+};
+
 export default (sender) => ({
-    auth: {
-        // login: (data) => sender.post('user/GetByLoginPassword', data),
-        login: (data) => sender.post('user/Login', data),
-        getCurrentUser: () => sender.get('user/Current'),
-        changePassword: (data) => sender.put('user/Current/Password', data)
+  agents: {
+    getList: () => sender.post('Agent/GetAgents'),
+    getListFake: async () => {
+      await wait(600);
+      const agents = [];
+      for (let i = 0; i < 100; i++) {
+        agents.push({
+          id: i,
+          ipAddress: `${i + 10}`,
+          name: `Название агента ${i + 1}`,
+          maxExecutorsCount: i * 2,
+          stateName: i % 2 ? 'Активен' : 'Не активен',
+        });
+      }
+      return { data: { agents } };
+    },
+    add: (data) => sender.post('Agent/CreateOrUpdate', data),
+    delete: ({ id }) => sender.delete('Agent', { data: { id } }),
+    update: (data) => sender.post('Agent/CreateOrUpdate', data),
+  },
+  launchHistory: {
+    getList: async (filter) => {
+      await wait(600);
+      const items = [];
+      for (let i = 0; i < 100; i++) {
+        items.push({
+          id: i,
+          process: `Процесс ${i}`,
+          dateStart: moment()
+            .subtract(i, 'days')
+            .toISOString(),
+          dateEnd: moment().toISOString(),
+          status: i % 2 ? 'Активен' : 'Не активен',
+          reason: i % 3 ? '' : 'По расписанию',
+        });
+      }
+      return { data: { items } };
+    },
+  },
+  executors: {
+    getList: (filter) => sender.post('Executor/GetExecutors', {}),
+    byId: (id) => sender.post('Executor/GetById', { id }),
+  },
+
+  // TODO: подумать над названиями
+  classifier: {
+    getProcessStatusesList: async () => {
+      await wait(600);
+      return [{ id: 1, name: 'Активный' }, { id: 2, name: 'Завершенный' }];
+    },
+    getRunReasonsList: async () => {
+      await wait(600);
+      return [{ id: 1, name: 'Расписание' }, { id: 2, name: 'Просто так' }];
+    },
+    getSchedulesList: async () => {
+      await wait(600);
+      return [{ id: 1, name: 'Расписание 1' }, { id: 2, name: 'Расписание 2' }];
+    },
+    getProcessList: async () => {
+      const { data: result } = await sender.post(
+        'WorkflowTemplate/GetWorkflowTemplates'
+      );
+      return result.workflowTemplates;
+    },
+    // когда будет бэк, все остальные методы classifier заменить на этот
+    getGenericTypesList: async (parentId) => {
+      const { data: result } = await sender.post('GenericType/GetByParentId', {
+        parentId: GENERIC_TYPES[parentId],
+      });
+      return result.genericTypes;
+    },
+  },
+  processes: {
+    getListFake: async () => {
+      await wait(600);
+      const processes = [];
+      for (let i = 0; i < 50; i++) {
+        let k = i + 1;
+        if (k < 10) k = `0${k}`;
+        processes.push({
+          id: i,
+          name: `Название процесса ${k}`,
+          schedulesInfo: i * 2,
+          stateName: i % 2 ? 'Активен' : 'Не активен',
+        });
+      }
+      return { data: { processes } };
+    },
+  },
+  customers: {
+    getList: () => sender.post('Enterprise'),
+    get: (id) => sender.post('Enterprise/GetById', { id }),
+
+    getListFake: async () => {
+      await wait(600);
+      const customers = [];
+      for (let i = 0; i < 100; i++) {
+        customers.push({
+          id: i,
+          fullName: `Название клиента ${i + 1}`,
+          typeEnterprise: `Тип ${i + 1}`,
+          managerName: 'Иванов И.И.',
+          inn: `123234${i}`,
+          phoneFax: +71231231231,
+          email: 'qwe@qwe.qwe',
+        });
+      }
+      console.log('data', customers);
+
+      return { data: { customers } };
     },
 
-    user: {
-        get: (id) => {
-            if (id) return sender.get(`user/${id}`);
-            return sender.get('user');
-        },
-        create: (data) => sender.post('user', data),
-        update: (id, data) => sender.put(`user/${id}`, data),
-        changePasswordByAdmin: (data) => sender.put(`user/${data.id}/Password`, data),
-        toggleAdminRights: (id, admin) =>
-            sender.put(`user/${id}/Rights`, { id, admin, test: 'hdsgfjdsfgjh' }),
-        delete: (id) => sender.delete(`user/${id}`)
-    },
-
-    report: {
-        getByVestibules: ({ stationIds, ...params }) =>
-            sender.post(
-                `report/GetDataByVestibules`,
-                { managedObjectsIdList: stationIds },
-                { params }
-            ),
-        getByTickets: ({ stationIds, ...params }) =>
-            sender.post(
-                'report/GetDataByTickets',
-                { managedObjectsIdList: stationIds },
-                { params }
-            ),
-        getMonitoring: ({ stationIds, ...params }) =>
-            sender.post(
-                'report/GetMonitoringByTicketType',
-                { managedObjectsIdList: stationIds },
-                { params }
-            ),
-        getVestibulesExcel: ({ reportType, stationIds, ...params }) => {
-            const method = getExportReportMethodName('ExportReportByVestibules', reportType);
-
-            return sender.post(
-                'report/' + method,
-                { managedObjectsIdList: stationIds },
-                { params, responseType: 'blob' }
-            );
-        },
-        getTicketsExcel: ({ reportType, stationIds, ...params }) => {
-            const method = getExportReportMethodName('ExportReportByTickets', reportType);
-
-            return sender.post(
-                'report/' + method,
-                { managedObjectsIdList: stationIds },
-                { params, responseType: 'blob' }
-            );
-        },
-        getMonitoringExcel: ({ reportType, stationIds, ...params }) => {
-            const method = getExportReportMethodName('ExportMonitoringByTicketType', reportType);
-
-            return sender.post(
-                'report/' + method,
-                { managedObjectsIdList: stationIds },
-                { params, responseType: 'blob' }
-            );
-        }
-    },
-    dashboard: {
-        getByStation: (params) =>
-            sender.get('Statistics/GetPassengerTrafficBy5Minutes', {
-                params
-            }),
-        getByStadium: (params) =>
-            sender.get('Statistics/GetPassengerTrafficByStadium', {
-                params
-            })
-    },
-
-    whiteList: function(controller = 'OverallWhitelistItem/') {
-        return {
-            getLists: ({ ids = [], ...params }) =>
-                sender.post(controller + 'GetWhitelistsByFilter', ids, {
-                    params
-                }),
-            delete: (listId) => sender.delete(controller + 'DeleteList', {
-                params: { listId }
-            }),
-            getListByFilter: (listId, { ids = [], ...params }) =>
-                sender.post(controller + 'GetByFilter', ids, {
-                    params: { listId, ...params }
-                }),
-            deleteById: (id) => sender.post(controller + 'SetDeleteDate', [id]),
-            uploadFile: ({ file }) => {
-                const formData = new FormData();
-                formData.append('file', file);
-                return sender.post(controller + 'LoadFromCsv', formData);
-            }
-        };
-    }(),
-    metroPlan: {
-        getTree: () => sender.get('MetroPlan/GetObjectsTree'),
-        getUhfTree: (maxLevel = 3) =>
-            sender.get('MetroPlan/GetUhfObjectsTree', { params: { maxLevel } }),
-        getStadiumList: () => sender.get('MetroPlan/GetStadiumList')
-    },
-    pass: {
-        getListByFilter: ({ ids, periodStart, periodEnd, desc = false, idData, orderBy = null }) =>
-            sender.post(
-                `Pass/GetPassListByFilter`,
-                {
-                    ids,
-                    managedObjectsIdList: idData
-                },
-                {
-                    params: {
-                        periodStart: periodStart !== null ? periodStart : undefined,
-                        periodEnd: periodEnd !== null ? periodEnd : undefined,
-                        orderBy: orderBy !== null ? orderBy : undefined,
-                        desc
-                    }
-                }
-            ),
-        getExcel: ({ periodStart, periodEnd, desc = false, idData, orderBy = null }) =>
-            sender.post(
-                `Pass/ExportToExcelByFilter`,
-                {
-                    managedObjectsIdList: idData
-                },
-                {
-                    params: {
-                        periodStart: periodStart !== null ? periodStart : undefined,
-                        periodEnd: periodEnd !== null ? periodEnd : undefined,
-                        orderBy: orderBy !== null ? orderBy : undefined,
-                        desc
-                    },
-                    responseType: 'blob',
-                    headers: {
-                        Accept: 'application/vnd.ms-excel'
-                    }
-                }
-            ),
-        getById: (id) => sender.get('Pass/GetById', { params: { id } }),
-        getByFanId: (fanId, ids) => sender.post('Pass/GetByFanId', ids || {}, { params: { fanId } })
-    },
-    telemetry: {
-        getLastStatesTree: () => sender.get('Telemetry/GetObjectCurrentStatesTree'),
-        getLastStatesById: (parentId) =>
-            sender.get('Telemetry/GetObjectCurrentStates', { params: { parentId } })
-    },
-    emails: {
-        getList: () => sender.get('Email/GetEmails'),
-        insert: (address) => sender.post('Email/InsertEmail', { address }),
-        delete: (id) => sender.delete('Email/DeleteEmail', { params: { id } })
-    },
-    versions: {
-        getList: () => sender.get('Version/GetList'),
-        insert: ({ number, file }) => {
-            const formData = new FormData();
-            formData.append('number', number);
-            formData.append('file', file);
-            return sender.post('Version/LoadVersion', formData);
-        },
-        getFile: (id) => sender.get('Version/GetVersion', { params: { id }, responseType: 'blob' })
-    },
-    devices: {
-        getList: () => sender.get('Version/GetDeviceVersions')
-    },
-    visitors: {
-        getListByFilter: ({ ids, periodStart, periodEnd, desc = false, idData, orderBy = null }) =>
-            sender.post(
-                `StationVisitors/GetVisitorsByFilter`,
-                {
-                    ids,
-                    managedObjectsIdList: idData
-                },
-                {
-                    params: {
-                        periodStart: periodStart !== null ? periodStart : undefined,
-                        periodEnd: periodEnd !== null ? periodEnd : undefined,
-                        orderBy: orderBy !== null ? orderBy : undefined,
-                        desc
-                    }
-                }
-            ),
-        getExcel: ({ ids, periodStart, periodEnd, desc = false, idData, orderBy = null }) =>
-            sender.post(
-                `StationVisitors/ExportToExcelByFilter`,
-                {
-                    ids,
-                    managedObjectsIdList: idData
-                },
-                {
-                    params: {
-                        periodStart: periodStart !== null ? periodStart : undefined,
-                        periodEnd: periodEnd !== null ? periodEnd : undefined,
-                        orderBy: orderBy !== null ? orderBy : undefined,
-                        desc
-                    },
-                    responseType: 'blob',
-                    headers: {
-                        Accept: 'application/vnd.ms-excel'
-                    }
-                }
-            ),
-        getById: (id) => sender.get('StationVisitors/GetById', { params: { id } }),
-
-        getByFanId: (fanId, ids) =>
-            sender.post('StationVisitors/GetByFanId', ids || {}, { params: { fanId } })
-    },
-    overallVisitors: {
-        getListByFilter: ({ markId, ids, periodStart, periodEnd, desc = false, orderBy = null }) =>
-            sender.post(
-                `OverallVisitors/GetOverallPassByFanFilter`,
-                {
-                    ids
-                },
-                {
-                    params: {
-                        id: markId,
-                        periodStart: periodStart || undefined,
-                        periodEnd: periodEnd || undefined,
-                        orderBy: orderBy || undefined,
-                        desc: orderBy ? desc : undefined
-                    }
-                }
-            ),
-        getExcel: ({ markId, ids, periodStart, periodEnd, desc = false, orderBy = null }) =>
-            sender.post(
-                `OverallVisitors/ExportToExcelByFilter`,
-                {
-                    ids
-                },
-                {
-                    params: {
-                        id: markId,
-                        periodStart: periodStart || undefined,
-                        periodEnd: periodEnd || undefined,
-                        orderBy: orderBy || undefined,
-                        desc: orderBy ? desc : undefined
-                    },
-                    responseType: 'blob',
-                    headers: {
-                        Accept: 'application/vnd.ms-excel'
-                    }
-                }
-            )
-    },
-    turnstiles: {
-        setState: (state) => sender.put('Turnstiles/State', null, { params: { state } }),
-        getState: () => sender.get('Turnstiles/State')
-    }
+    // update: (data) => sender.post('Schedule/CreateOrUpdate', data),
+    // delete: (data) => sender.post('Schedule/Delete', data),
+  },
 });

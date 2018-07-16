@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-class Contracts extends Component{
-    render(){
-        return(<div>Сделки</div>)
-    }
+class Contracts extends Component {
+  render() {
+    return <div>Сделки</div>;
+  }
 }
 
 export default Contracts;

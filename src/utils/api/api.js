@@ -4,10 +4,8 @@ import Emitter from '../emitter';
 import apiConfig from './api-config';
 import signalConfigure from './signalR/configure';
 
-function buildByHostname(defaultIp, port) {
-    const currentHostname = window.location.hostname;
-    const ip = currentHostname === 'localhost' ? defaultIp : currentHostname;
-    const url = ip ? `http://${ip}:${port}` : `http://${defaultIp}:${port}`;
+function buildByHostname(ip, port) {
+    const url = `http://${ip}:${port}`;
     return {
         apiUrl: `${url}/api`,
         signalRUrl: url
@@ -17,13 +15,13 @@ function buildByHostname(defaultIp, port) {
 let urls = null;
 // eslint-disable-next-line no-undef
 if (BUILD_TYPE === 'local') {
-    urls = buildByHostname('localhost', 8001);
+    urls = buildByHostname('localhost', 5000);
     // eslint-disable-next-line no-undef
 } else if (BUILD_TYPE === 'test') {
     urls = buildByHostname('87.249.16.100', 8000);
     // eslint-disable-next-line no-undef
 } else if (BUILD_TYPE === 'dev') {
-    urls = buildByHostname('192.168.1.223', 8001);
+    urls = buildByHostname('192.168.1.202', 888);
 } else if (BUILD_TYPE === 'prod') {
     urls = buildByHostname('uhf.ttpcenter.ru', 8000);
 }
@@ -38,8 +36,8 @@ class ApiClient {
             baseURL: apiUrl,
             headers: {
                 'Cache-control': 'no-store, no-cache',
-                'Pragma': 'no-cache',
-                'Expires': 0
+                Pragma: 'no-cache',
+                Expires: 0
             }
         });
 
@@ -67,7 +65,7 @@ class ApiClient {
         Object.assign(this, apiMethods);
 
         // Подпишем наш EventEmitter на события с signalR
-        signalConfigure(this.signalR, this.emitter);
+        // signalConfigure(this.signalR, this.emitter);
     }
 
     setToken(token) {
