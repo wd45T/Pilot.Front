@@ -1,5 +1,4 @@
 import CustomersView from './CustomersView';
-import './style.less';
-
+import './Customer.less';
 
 export default CustomersView;
