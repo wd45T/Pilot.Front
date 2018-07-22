@@ -115,7 +115,7 @@ export default (sender) => ({
         },
     },
     customers: {
-        getList: () => sender.post('Enterprise'),
+        getList: () => sender.get('Enterprise'),
         get: (id) => sender.post('Enterprise/GetById', { id }),
 
         getListFake: async () => {
@@ -132,9 +132,29 @@ export default (sender) => ({
                     email: 'qwe@qwe.qwe',
                 });
             }
-            console.log('data', customers);
-
             return { data: { customers } };
+        },
+
+        // update: (data) => sender.post('Schedule/CreateOrUpdate', data),
+        // delete: (data) => sender.post('Schedule/Delete', data),
+    },
+    deals: {
+        getList: () => sender.get('Enterprise'),
+        get: (id) => sender.post('Enterprise/GetById', { id }),
+
+        getListFake: async () => {
+            await wait(600);
+            const deals = [];
+            for (let i = 0; i < 100; i++) {
+                deals.push({
+                    id: i,
+                    dealName: `Название сделки ${i + 1}`,
+                    customerName: `Название клиента ${i + 1}`,
+                    budget: `${i}000000`,
+                    stage: i,
+                });
+            }
+            return { data: { deals } };
         },
 
         // update: (data) => sender.post('Schedule/CreateOrUpdate', data),

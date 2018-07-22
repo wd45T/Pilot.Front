@@ -1,21 +1,21 @@
 import Customers from './pages/customers';
-import Contracts from './pages/contracts';
+import DealsView from './pages/deals';
 
-export default [ 
+export default [
     {
-    alias: 'customers',
-    to: '/customers',
-    icon: 'team',
-    text: 'Клиенты',
-    component: Customers,
-    exact: true
-},
-{
-    alias: 'contracts',
-    to: '/contracts ',
-    icon: 'solution',
-    text: 'Сделки',
-    component: Contracts,
-    exact: true
-},
+        alias: 'customers',
+        to: '/customers',
+        icon: 'team',
+        text: 'Клиенты',
+        component: Customers,
+        exact: true,
+    },
+    {
+        alias: 'deals',
+        to: '/deals ',
+        icon: 'solution',
+        text: 'Сделки',
+        component: DealsView,
+        exact: true,
+    },
 ];

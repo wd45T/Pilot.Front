@@ -1,14 +1,14 @@
 import Sender from './sender';
-import SignalR from './signalR/signalR';
+// import SignalR from './signalR/signalR';
 import Emitter from '../emitter';
 import apiConfig from './api-config';
-import signalConfigure from './signalR/configure';
+// import signalConfigure from './signalR/configure';
 
 function buildByHostname(ip, port) {
     const url = `http://${ip}:${port}`;
     return {
         apiUrl: `${url}/api`,
-        signalRUrl: url
+        signalRUrl: url,
     };
 }
 
@@ -21,7 +21,7 @@ if (BUILD_TYPE === 'local') {
     urls = buildByHostname('87.249.16.100', 8000);
     // eslint-disable-next-line no-undef
 } else if (BUILD_TYPE === 'dev') {
-    urls = buildByHostname('192.168.1.202', 888);
+    urls = { apiUrl: 'http://wd45dev-001-site1.itempurl.com/api' };
 } else if (BUILD_TYPE === 'prod') {
     urls = buildByHostname('uhf.ttpcenter.ru', 8000);
 }
@@ -37,14 +37,14 @@ class ApiClient {
             headers: {
                 'Cache-control': 'no-store, no-cache',
                 Pragma: 'no-cache',
-                Expires: 0
-            }
+                Expires: 0,
+            },
         });
 
         // Сконфигурируем signalR
-        this.signalR = new SignalR({
-            baseUrl: signalRUrl
-        });
+        // this.signalR = new SignalR({
+        //     baseUrl: signalRUrl,
+        // });
 
         // Здесь будет лежат ссылка на токен авторизации
         this.token = null;
@@ -57,7 +57,7 @@ class ApiClient {
                     request.headers.token = this.token; // eslint-disable-line no-param-reassign
                 }
                 return request;
-            }
+            },
         });
 
         // Добавим методы api
@@ -82,12 +82,12 @@ class ApiClient {
         return this.emitter.removeListener(eventType, callback);
     }
 
-    startSignalR() {
-        return this.signalR.startAllHubs();
-    }
-    stopSignalR() {
-        return this.signalR.stopAllHubs();
-    }
+    // startSignalR() {
+    //     return this.signalR.startAllHubs();
+    // }
+    // stopSignalR() {
+    //     return this.signalR.stopAllHubs();
+    // }
 }
 export { ApiClient };
 export default new ApiClient(apiConfig);
